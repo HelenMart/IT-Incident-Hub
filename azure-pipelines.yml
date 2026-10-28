@@ -1,0 +1,44 @@
+
+trigger:
+  - main
+
+pr:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+
+  - task: NodeTool@0
+    displayName: 'Configurar Node.js'
+    inputs:
+      versionSpec: '22.x'
+
+  - script: npm ci
+    displayName: 'Instalar dependencias del backend'
+    workingDirectory: '$(Build.SourcesDirectory)/backend'
+
+  - script: node --check server.js
+    displayName: 'Comprobar sintaxis del backend'
+    workingDirectory: '$(Build.SourcesDirectory)/backend'
+
+  - script: npm audit --omit=dev --audit-level=high
+    displayName: 'Revisar seguridad de dependencias'
+    workingDirectory: '$(Build.SourcesDirectory)/backend'
+
+  - script: npm ci
+    displayName: 'Instalar dependencias del frontend'
+    workingDirectory: '$(Build.SourcesDirectory)/frontend'
+
+  - script: npm run build
+    displayName: 'Compilar React'
+    workingDirectory: '$(Build.SourcesDirectory)/frontend'
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publicar artefacto del frontend'
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)/frontend/dist'
+      artifact: 'frontend-compilado'
+      publishLocation: 'pipeline'
