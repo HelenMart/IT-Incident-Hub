@@ -1,0 +1,17 @@
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: incident-hub-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: helen
+      POSTGRES_PASSWORD: helen123
+      POSTGRES_DB: incident_hub
+    ports:
+      - "5434:5432"
+    volumes:
+      - incidentes_data:/var/lib/postgresql/data
+
+volumes:
+  incidentes_data:

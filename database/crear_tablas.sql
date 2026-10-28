@@ -1,0 +1,12 @@
+
+CREATE TABLE IF NOT EXISTS incidentes (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(150) NOT NULL,
+    descripcion TEXT NOT NULL,
+    categoria VARCHAR(50) NOT NULL,
+    prioridad VARCHAR(20) NOT NULL,
+    usuario VARCHAR(100) NOT NULL,
+    tecnico VARCHAR(100),
+    estado VARCHAR(30) NOT NULL DEFAULT 'NUEVO',
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
