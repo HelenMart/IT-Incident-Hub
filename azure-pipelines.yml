@@ -13,10 +13,7 @@ pool:
 steps:
   - checkout: self
 
-  - task: NodeTool@0
-    displayName: 'Configurar Node.js'
-    inputs:
-      versionSpec: '22.x'
+  
 
   - script: npm ci
     displayName: 'Instalar dependencias del backend'
